@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pathfinder Buff Manager</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="css/typeahead.css"/>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="js/typeahead.min.js"></script>
+    <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+    <style>
+      .container { margin-top: 10px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="col-lg-5">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-9">
+              <input class="form-control" id="newpc" type="text"/>
+            </div>
+            <div class="col-sm-3">
+              <button id="newpcbutton" class="btn">New PC</button><br/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-9">
+              <select class="form-control" id="pclist">
+                <option>--- Add New ---</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-6">
+              <input class="form-control" id="bufflist" type="text"/>
+            </div>
+            <div class="col-sm-6">
+              <button id="buffapplybtn" class="btn"><i class="fa fa-check"></i> Apply</button>
+              <button id="buffremovebtn" class="btn"><i class="fa fa-trash-o"></i> Remove</button>
+            </div>
+          </div>
+        </div>
+        <div class="list-group" id="sourcebuffs">
+          
+        </div>
+        <div class="panel panel-default hidden">
+          <div class="panel-heading">Add/Edit Buff</div>
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label col-sm-3">Type</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="bufftype" type="text"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3">Target</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="bufftarget" type="text"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3">Amount</label>
+              <div class="col-sm-3">
+                <input class="form-control" id="buffname" type="text"/>
+              </div>
+              <div class="col-sm-3">
+                <div class="checkbox">
+                  <label>
+                    <input id="buffstacks" type="checkbox"/> Stacks?
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <button id="savebuff" class="btn"><i class="fa fa-save"></i> Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="col-lg-offset-3">
+        <h4 id="pcinfohdr"></h3>
+        <pre id="pcinfo">No User Selected</pre>
+        </div>
+      </div>
+    </div>
+    <script src="bundle.js"></script>
+    <script>
+      var app = require('./client.js')()
+      app.setup()
+      
+      $("#bufflist").typeahead({local: []})
+      function updateTypeahead(list) {
+        $("#bufflist").typeahead('destroy', 'NoCached')
+        $("#bufflist").typeahead({local: list})
+      }
+      document.getElementById('bufflist').addEventListener('sourcelist', function(e) { updateTypeahead(e.detail) })
+      $("#bufflist").on('typeahead:selected', function(obj,data) {
+        var ev = new Event('typeahead')
+        document.getElementById('bufflist').dispatchEvent(ev)
+      })
+      $("#bufflist").on('typeahead:autocompleted', function(obj,data) {
+        var ev = new Event('typeahead')
+        document.getElementById('bufflist').dispatchEvent(ev)
+      })
+    </script>
+  </body>
+  
+</html>
+

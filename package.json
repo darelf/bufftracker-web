@@ -1,0 +1,24 @@
+{
+  "name": "bufftracker-web",
+  "version": "0.0.1",
+  "description": "Web application for the bufftracker.",
+  "keywords": ["pathfinder","rpg","gaming"],
+  "author": "Darel Finkbeiner <darelf@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bufftracker": "0.2.x",
+    "crdt": "3.5.x",
+    "event-stream": "3.0.x",
+    "numeral": "1.5.2",
+    "shoe": "0.0.15",
+    "event-stream": "3.0.x",
+    "reconnect": "1.5.x",
+    "moment": "2.4.x",
+    "ecstatic": "0.4.x",
+    "through": "2.3.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/darelf/bufftracker-web.git"
+  }
+}
