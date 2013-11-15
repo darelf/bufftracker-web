@@ -63,12 +63,6 @@ App.prototype.setup = function() {
     self.updatePCInfo()
   })
   
-  document.getElementById('bufflist').addEventListener('typeahead', function() {
-    var b = document.getElementById('bufflist')
-    var bname = b.value
-    self.displaySourceInfo(bname)
-  })
-  
   self.updatePCList()
   self.updateSourceList()
   self.updatePCInfo()
@@ -113,19 +107,15 @@ App.prototype.updateSourceList = function() {
   document.getElementById('bufflist').dispatchEvent(event)
 }
 
-App.prototype.displaySourceInfo = function(b) {
+App.prototype.getSourceInfo = function(b) {
   var self = this
-  var l = document.getElementById('sourcebuffs')
-  l.innerHTML = ''
-  var frag = document.createDocumentFragment()
-  var buffs = self.doc.createSet('source', b)
-  buffs.forEach(function(v) {
-    var item = document.createElement('a')
-    item.setAttribute('href', '#')
-    item.setAttribute('class', 'list-group-item')
-    item.innerHTML = numeral(v.get('amount')).format('+0') + ' ' + v.get('type') + ' bonus to ' + v.get('target')
-    frag.appendChild(item)
-  })
-  l.appendChild(frag)
+  return self.doc.createSet('source', b)
+}
+
+App.prototype.updateBuff = function(b) {
+  var self = this
+  buff.updateBuff(b)
+  self.updatePCInfo()
+  self.updateSourceList()
 }
 

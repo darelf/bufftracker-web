@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-browserify -r ./client.js -o static/bundle.js
+browserify -r numeral -r ./client.js -o static/bundle.js

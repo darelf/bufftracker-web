@@ -1,23 +1,28 @@
 {
 	"Acute Sense": [
-		{"type": "Enhancement", "target": "perception", "amount": 10, "stacks": false}
+		{"type": "enhancement", "target": "perception", "amount": 10, "stacks": false}
 	],
 	"Aspect of the Bear": [
-		{"type": "Enhancement", "target": "natural armor", "amount": 2, "stacks": false},
-		{"type": "Enhancement", "target": "cmb", "amount": 2, "stacks": false}
+		{"type": "enhancement", "target": "natural armor", "amount": 2, "stacks": false},
+		{"type": "enhancement", "target": "cmb", "amount": 2, "stacks": false}
 	],
 	"Bless": [
-	  {"type": "Morale", "target": "attacks", "amount": 1, "stacks": false},
-	  {"type": "Morale", "target": "saves vs. fear", "amount": 1, "stacks": false}
+	  {"type": "morale", "target": "attacks", "amount": 1, "stacks": false},
+	  {"type": "morale", "target": "saves vs. fear", "amount": 1, "stacks": false}
 	],
 	"Divine Favor": [
-    {"type": "Luck", "target": "attacks", "amount": 1, "stacks": false},
-    {"type": "Luck", "target": "weapon damage", "amount": 1, "stacks": false}
+    {"type": "luck", "target": "attacks", "amount": 1, "stacks": false},
+    {"type": "luck", "target": "weapon damage", "amount": 1, "stacks": false}
 	],
 	"Good Hope": [
-	  {"type": "Morale", "target": "saves", "amount": 2, "stacks": false},
-	  {"type": "Morale", "target": "attacks", "amount": 2, "stacks": false},
-	  {"type": "Morale", "target": "ability checks", "amount": 2, "stacks": false},
-	  {"type": "Morale", "target": "weapon damage", "amount": 2, "stacks": false}
+	  {"type": "morale", "target": "saves", "amount": 2, "stacks": false},
+	  {"type": "morale", "target": "attacks", "amount": 2, "stacks": false},
+	  {"type": "morale", "target": "ability checks", "amount": 2, "stacks": false},
+	  {"type": "morale", "target": "weapon damage", "amount": 2, "stacks": false}
+	],
+	"Haste": [
+		{"type": "", "target": "attacks", "amount": 1, "stacks": true},
+		{"type": "dodge", "target": "ac", "amount": 1, "stacks": true},
+		{"type": "dodge", "target": "saves (reflex)", "amount": 1, "stacks": true}
 	]
 }
