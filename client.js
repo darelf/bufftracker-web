@@ -114,8 +114,17 @@ App.prototype.getSourceInfo = function(b) {
 
 App.prototype.updateBuff = function(b) {
   var self = this
+  if (!b.id) {
+    b.id = [b.source,b.type,b.target].join('|')
+  }
   buff.updateBuff(b)
   self.updatePCInfo()
   self.updateSourceList()
 }
 
+App.prototype.deleteBuff = function(b) {
+  var self = this
+  buff.deleteBuff(b)
+  self.updatePCInfo()
+  self.updateSourceList()
+}

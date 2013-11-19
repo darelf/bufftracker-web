@@ -5,7 +5,7 @@ var moment = require('moment')
 var http = require('http')
 var ecstatic = require('ecstatic')(__dirname + '/static')
 var server = http.createServer(ecstatic)
-server.listen(8000)
+server.listen(8080)
 
 var doc = buff.doc
 var fs = require('fs')

@@ -124,7 +124,15 @@
       })
       
       $("#buff-mod-add").on('click', function() {
-        if ($("#sourcebuffs a.active").length < 1) return
+        if (!$("#bufflist").val()) return
+        displayBuffEdit()
+      })
+      $("#buff-mod-del").on('click', function() {
+        if (!$("#bufflist").val()) return
+        var e = $("#sourcebuffs a.active")[0]
+        if (!e) return
+        app.deleteBuff(e.dataset.buffId)
+        displaySourceInfo($("#bufflist").val())
       })
       $("#buff-mod-edit").on('click', function() {
         var e = $("#sourcebuffs a.active")[0]
@@ -147,11 +155,13 @@
       
       function displayBuffEdit(b) {
         $("#buffedit").removeClass("hidden")
-        var buff = app.doc.get(b)
-        $("#buffedit-type").val(buff.get('type'))
-        $("#buffedit-target").val(buff.get('target'))
-        $("#buffedit-amount").val(buff.get('amount'))
-        $("#buffedit-stacks")[0].checked = buff.get('stacks')
+        if (b) {
+          var buff = app.doc.get(b)
+          $("#buffedit-type").val(buff.get('type'))
+          $("#buffedit-target").val(buff.get('target'))
+          $("#buffedit-amount").val(buff.get('amount'))
+          $("#buffedit-stacks")[0].checked = buff.get('stacks')
+        }
       }
       
       function displaySourceInfo(b) {

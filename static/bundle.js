@@ -115,11 +115,20 @@ App.prototype.getSourceInfo = function(b) {
 
 App.prototype.updateBuff = function(b) {
   var self = this
+  if (!b.id) {
+    b.id = [b.source,b.type,b.target].join('|')
+  }
   buff.updateBuff(b)
   self.updatePCInfo()
   self.updateSourceList()
 }
 
+App.prototype.deleteBuff = function(b) {
+  var self = this
+  buff.deleteBuff(b)
+  self.updatePCInfo()
+  self.updateSourceList()
+}
 
 },{"bufftracker":3,"event-stream":25,"moment":34,"numeral":"2o9biQ","reconnect":52,"shoe":54,"through":56}],"./client.js":[function(require,module,exports){
 module.exports=require('Yg1+Yn');
@@ -161,17 +170,40 @@ BuffTracker.prototype.addBuff = function(buff) {
                source: buff.source, type: buff.type, amount: buff.amount, target: buff.target, stacks: buff.stacks})
 }
 
+BuffTracker.prototype.deleteBuff = function(buffid) {
+  var self = this
+  self.doc.rm(buffid)
+}
+
 BuffTracker.prototype.updateBuff = function(buff) {
   var self = this
-  var r = self.doc.get([buff.source,buff.type,buff.target].join('|'))
-  if (r) {
+  var r = self.doc.get(buff.id)
+  if (r && r.get('source')) {
+    r.set('source', buff.source)
     r.set('type', buff.type)
     r.set('target', buff.target)
     r.set('amount', buff.amount)
     r.set('stacks', buff.stacks)
   } else {
-    self.doc.addBuff(buff)
+    self.addBuff(buff)
   }
+  if (buff.source) self.updateSource(buff.source)
+}
+
+BuffTracker.prototype.updateSource = function(source) {
+  var self = this
+  var persons = []
+  self.doc.createSet('source', source).each(function(v) {
+    var l = v.get('applies')
+    if (l) {
+      l.forEach(function(p) {
+        if (persons.indexOf(p) < 0) persons.push(p)
+      })
+    }
+  })
+  persons.forEach(function(v) {
+    self.applySourceToCharacter(source, v)
+  })
 }
 
 BuffTracker.prototype.deleteBuffsBySource = function(source) {
@@ -195,6 +227,7 @@ BuffTracker.prototype.removeCharacter = function(personid) {
 BuffTracker.prototype.applyBuffToCharacter = function(buffid, personid) {
   var self = this
   var b = self.doc.get(buffid)
+  if (!b) return
   var l = b.get('applies')
   if (l) {
     if (l.indexOf(personid) < 0) l.push(personid)
@@ -205,7 +238,9 @@ BuffTracker.prototype.applyBuffToCharacter = function(buffid, personid) {
 BuffTracker.prototype.removeBuffFromCharacter = function(buffid, personid) {
   var self = this
   var b = self.doc.get(buffid)
+  if (!b) return
   var l = b.get('applies')
+  if (!l) return
   var idx = l.indexOf(personid)
   if (idx > -1) {
     l.splice(idx,1)
