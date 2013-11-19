@@ -10,6 +10,15 @@
 	  {"type": "morale", "target": "attacks", "amount": 1, "stacks": false},
 	  {"type": "morale", "target": "saves vs. fear", "amount": 1, "stacks": false}
 	],
+	"Deadeye's Lore": [
+	  {"type":"sacred", "target":"skill checks (Survival)", "amount": 4, "stacks": false}
+	],
+	"Doom": [
+	  {"type":"", "target": "attacks", "amount": -2, "stacks": true},
+	  {"type":"", "target": "saves", "amount": -2, "stacks": true},
+	  {"type":"", "target": "skill checks", "amount": -2, "stacks": true},
+	  {"type":"", "target": "ability checks", "amount": -2, "stacks": true}
+	],
 	"Divine Favor": [
     {"type": "luck", "target": "attacks", "amount": 1, "stacks": false},
     {"type": "luck", "target": "weapon damage", "amount": 1, "stacks": false}
@@ -24,5 +33,19 @@
 		{"type": "", "target": "attacks", "amount": 1, "stacks": true},
 		{"type": "dodge", "target": "ac", "amount": 1, "stacks": true},
 		{"type": "dodge", "target": "saves (reflex)", "amount": 1, "stacks": true}
+	],
+	"Protection from Evil": [
+		{"type":"deflection", "target":"ac vs evil", "amount": 2, "stacks": false},
+		{"type":"resistance", "target":"saves vs evil", "amount": 2, "stacks": false}
+	],
+	"Remove Fear": [
+		{"type":"morale", "target": "saves vs fear", "amount": 4, "stacks": false}
+	],
+	"Shield of Faith": [
+		{"type":"deflection", "target": "ac", "amount": 2, "stacks": false}
+	],
+	"Tap Inner Beauty": [
+		{"type":"insight", "target": "ability checks (cha)", "amount": 2, "stacks": false},
+		{"type":"insight", "target": "skill checks (cha)", "amount": 2, "stacks": false}
 	]
 }
