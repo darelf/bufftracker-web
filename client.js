@@ -89,10 +89,19 @@ App.prototype.updatePCList = function() {
 
 App.prototype.updatePCInfo = function(pc) {
   var txt = document.getElementById('pcinfo')
+  var currbuffs = document.getElementById('currentbuffs')
   txt.innerHTML = ''
+  txt.innerHTML = buff.showBonuses(pc).join('\n')
+
   var sources = buff.getAllSourceOnCharacter(pc)
-  
-  txt.innerHTML = 'Effects: ' + (sources.length ? sources.join(', ') : 'None') + '\n' + buff.showBonuses(pc).join('\n')
+  currbuffs.innerHTML = ''
+  var frag = document.createDocumentFragment()
+  sources.forEach(function(v) {
+    var item = frag.appendChild(document.createElement('li'))
+    item.setAttribute('class', 'list-group-item small')
+    item.innerHTML = v
+  })
+  currbuffs.appendChild(frag)
 }
 
 App.prototype.updateSourceList = function() {
