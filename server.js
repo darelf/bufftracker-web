@@ -5,7 +5,10 @@ var moment = require('moment')
 var http = require('http')
 var ecstatic = require('ecstatic')(__dirname + '/static')
 var server = http.createServer(ecstatic)
-server.listen(8080)
+var port = process.env.PORT || 8080
+server.listen(port)
+
+console.log("Listening: " + port)
 
 var doc = buff.doc
 var fs = require('fs')

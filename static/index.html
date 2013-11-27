@@ -14,24 +14,41 @@
     </style>
   </head>
   <body>
+    <div id="pc-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="pc-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="pc-modal-label">Add New PC</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <div class="col-sm-9">
+                  <input class="form-control" id="newpc" type="text" placeholder="New PC Name"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button id="savenewpcbutton" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
       <div class="col-lg-5">
+        <div class="panel panel-default" id="pclist-panel">
+          <div class="panel-heading"><b>List of PCs</b></div>
+          <div class="list-group" id="pclist">
+          </div>
+          <div class="panel-footer">
+            <button id="newpcbtn" class="btn btn-xs" title="new" data-toggle="modal" data-target="#pc-modal"><i class="fa fa-plus"></i></button>
+            <button id="delpcbtn" class="btn btn-xs" title="delete"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
         <div class="form-horizontal">
-          <div class="form-group">
-            <div class="col-sm-9">
-              <input class="form-control" id="newpc" type="text"/>
-            </div>
-            <div class="col-sm-3">
-              <button id="newpcbutton" class="btn">New PC</button><br/>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-9">
-              <select class="form-control" id="pclist">
-                <option>--- Add New ---</option>
-              </select>
-            </div>
-          </div>
           <div class="form-group">
             <div class="col-sm-6">
               <input class="form-control" id="bufflist" type="text"/>
@@ -96,6 +113,10 @@
       var app = require('./client.js')()
       var numeral = require('numeral')
       app.setup()
+      $("#savenewpcbutton").on('click', function() {
+        app.addPC()
+        app.updatePCList()
+      })
       
       $("#bufflist").typeahead({local: []})
       
@@ -116,11 +137,17 @@
         document.getElementById('bufflist').dispatchEvent(ev)
       })
       
-      $("#bufflist").on('focus', function() { $("#buffedit").addClass("hidden") })
+      //$("#bufflist").on('focus', function() { $("#buffedit").addClass("hidden") })
       
       $("#sourcebuffs").on('click', function(ev) {
         $("#sourcebuffs a.active").removeClass('active')
         $(ev.target).addClass('active')
+      })
+      
+      $("#pclist").on('click', function(ev) {
+        $("#pclist a.active").removeClass('active')
+        $(ev.target).addClass('active')
+        app.updatePCInfo(ev.target.dataset.pcId)
       })
       
       $("#buff-mod-add").on('click', function() {
@@ -181,6 +208,22 @@
         })
         l.appendChild(frag)
       }
+      
+      $('#buffapplybtn').on('click', function() {
+        var srclist = document.getElementById('bufflist')
+        var item = srclist.value
+        var pc = $("#pclist a.active")[0]
+        if (pc) pc = pc.dataset.pcId
+        app.applyBuff(item,pc)
+      })
+      
+      document.getElementById('buffremovebtn').addEventListener('click', function() {
+        var srclist = document.getElementById('bufflist')
+        var item = srclist.value
+        var pc = $("#pclist a.active")[0]
+        if (pc) pc = pc.dataset.pcId
+        app.removeBuff(item,pc)
+      })
     </script>
   </body>
   
