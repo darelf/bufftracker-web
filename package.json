@@ -5,6 +5,7 @@
   "keywords": ["pathfinder","rpg","gaming"],
   "author": "Darel Finkbeiner <darelf@me.com>",
   "license": "MIT",
+  "main": "server.js",
   "dependencies": {
     "bufftracker": "0.2.x",
     "crdt": "3.5.x",
@@ -16,6 +17,9 @@
     "moment": "2.4.x",
     "ecstatic": "0.4.x",
     "through": "2.3.x"
+  },
+  "engines": {
+    "node": "0.10.x"
   },
   "repository": {
     "type": "git",
