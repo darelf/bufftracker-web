@@ -2,11 +2,11 @@
 <html>
   <head>
     <title>Pathfinder Buff Manager</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
     <link rel="stylesheet" type="text/css" href="css/typeahead.css"/>
     <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script src="js/typeahead.min.js"></script>
     <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
     <style>
@@ -75,7 +75,21 @@
       </div>
     </div>
     <div class="container">
-      <div class="col-lg-5">
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <h4>Room</h4>
+          
+          <div class="input-group">
+            <input id="current-room" class="form-control" type="text"/>
+            <div class="input-group-btn"><button class="btn" id="join-room">Join Room</button></div>
+          </div>
+        </div>
+        <br/>
+        <div class="panel panel-default" id="roomlist-panel">
+          <div class="panel-heading"><b>List of Rooms</b></div>
+          <div class="list-group" id="roomlist">
+          </div>
+        </div>
         <div class="panel panel-default" id="pclist-panel">
           <div class="panel-heading"><b>List of PCs</b></div>
           <div class="list-group" id="pclist">
@@ -86,13 +100,15 @@
           </div>
         </div>
         <div class="form-horizontal">
+          <h4>Buff</h4>
           <div class="form-group">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
               <input class="form-control" id="bufflist" type="text"/>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-7">
               <button id="buffapplybtn" class="btn"><i class="fa fa-check"></i> Apply</button>
               <button id="buffremovebtn" class="btn"><i class="fa fa-times"></i> Remove</button>
+              <button id="buffcreate" class="btn"><i class="fa fa-pencil-square-o"></i> New</button>
             </div>
           </div>
         </div>
@@ -102,7 +118,7 @@
             
           </div>
           <div class="panel-footer" id="buffbtns">
-            <button id="buff-mod-add" class="btn btn-xs" title="add"><i class="fa fa-plus"></i></button>
+            <button id="buff-mod-add" class="btn btn-xs" title="add" data-toggle="modal" data-target="#buffedit"><i class="fa fa-plus"></i></button>
             <button id="buff-mod-del" class="btn btn-xs" title="delete"><i class="fa fa-minus"></i></button>
             <button id="buff-mod-edit" class="btn btn-xs" title="edit" data-toggle="modal" data-target="#buffedit"><i class="fa fa-pencil"></i></button>
           </div>
@@ -121,6 +137,21 @@
     <script>
       var app = require('./client.js')()
       var numeral = require('numeral')
+      
+      function updateRoomList(rooms) {
+        var l = $("#roomlist")
+        rooms.forEach(function(v) {
+          var item = $('<a href="#" class="list-group-item">' + v + '</a>')
+          item.data('roomId', v)
+          l.append(item)
+        })
+      }
+      
+      document.getElementById('roomlist').addEventListener('roomlist', function(e) { updateRoomList(e.detail) })
+      $("#roomlist").on('click', function(ev) {
+        $("#current-room").val($(ev.target).data('roomId'))
+      })
+      
       app.setup()
 
       $("#savenewpcbutton").on('click', function() {
@@ -172,6 +203,10 @@
         app.updatePCInfo(ev.target.dataset.pcId)
       })
       
+      $("#delpcbtn").on('click', function() {
+        app.deletePC($("#pclist a.active")[0].dataset.pcId)
+      })
+      
       $("#buff-mod-add").on('click', function() {
         if (!$("#bufflist").val()) return
         displayBuffEdit()
@@ -209,7 +244,13 @@
           $("#buffedit-target").val(buff.get('target'))
           $("#buffedit-amount").val(buff.get('amount'))
           $("#buffedit-stacks")[0].checked = buff.get('stacks')
+        } else {
+          $("#buffedit-type").val('')
+          $("#buffedit-target").val('')
+          $("#buffedit-amount").val('')
+          $("#buffedit-stacks")[0].checked = false
         }
+        
       }
       
       function displaySourceInfo(b) {
@@ -244,6 +285,14 @@
         var pc = $("#pclist a.active")[0]
         if (pc) pc = pc.dataset.pcId
         app.removeBuff(item,pc)
+      })
+      
+      $("#buffcreate").on('click', function() {
+        $("#bufflist").val('')
+        $("#bufflist").attr('placeholder', 'Enter New Buff Name')
+        $("#sourcebuffs").html('')
+        $("#sourceedit .panel-heading").html("<b>List of Buffs for New Source</b>")
+        $("#sourceedit").removeClass('hidden')
       })
     </script>
   </body>
